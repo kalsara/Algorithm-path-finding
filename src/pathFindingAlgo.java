@@ -49,13 +49,7 @@ public class pathFindingAlgo{
             }*/
             count++;
 
-           try {
-                TimeUnit.MILLISECONDS.sleep(100);
-
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+           
             StdDraw.setPenColor(Color.RED);
             if (i == 0) {
 
