@@ -1,6 +1,28 @@
 
 public class pathFindingAlgo{
 
+public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int Bj,double dDistance,String name) {
+        Node [][]squareGrid;
+        //size of randomlyGenMatrix boolean 2D array
+        int size = open.length;
+        //start cordinate
+        Node startPoint = new Node(Ai, Aj);
+        //end cordinate
+        Node endPoint = new Node(Bi, Bj);
+        // The 2d Node array that is used to store Nodes
+        squareGrid = new Node[size][size];
+        // finding blocked cells in the squareGrid
+        for (int i = 0; i < size; ++i) {
+            for (int j = 0; j < size; ++j) {
+                squareGrid[i][j] = new Node(i, j);
+                if (open[i][j] == false) {
+
+                    squareGrid[i][j].blockedCell = true;
+
+
+                }
+            }
+        }
 
 /make grid
     public static void show(boolean[][] a, boolean which) {
