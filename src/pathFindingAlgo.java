@@ -21,6 +21,146 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
 
 
                 }
+// setting start distance to 0.
+        // All other Nodes will have infinity distance at the beginning
+        startPoint.distance =0;
+
+        // a comparator object that compare elements in the queue and replace
+        //making a min piroty-queue
+        Comparator<Node> distancecomparator = (left, right) -> {
+            if (left.distance > (right.distance)) {
+                return 1;
+
+            }
+            return -1;
+        };
+
+
+        // Queue to store visiting Nodes
+        Queue<Node> distanceQueue = new PriorityQueue(size, distancecomparator);
+       //first visiting node
+        distanceQueue.add(startPoint);
+       //check all elements in the queue
+        while(distanceQueue.size() > 0) {
+           //get minimum value to currentNode
+            Node currentNode = distanceQueue.remove();
+            Node otherNode;
+            //check path met end point
+            if(currentNode.x==endPoint.x  && currentNode.y==endPoint.y){
+
+                break;
+            }
+
+            // check Top node exist
+            if (currentNode.x - 1 >= 0) {
+
+                //get top node cordinates to otherNode object
+                otherNode = squareGrid[currentNode.x - 1][currentNode.y];
+                //check for valid Node
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    //replace the distance from source point
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    //put visted node to parent(for back track)
+                    otherNode.parent = currentNode;
+
+                    distanceQueue.add(otherNode);
+                }
+                // check Top Right node exist
+                if (currentNode.y + 1 < size) {
+                    otherNode= squareGrid[currentNode.x - 1][currentNode.y + 1];
+                    if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + dDistance) {
+                        otherNode.distance = currentNode.distance + dDistance;
+                        otherNode.parent = currentNode;
+                        distanceQueue.add(otherNode);
+                    }
+                }
+
+                // check Top Left node exist
+                if (currentNode.y - 1 > 0) {
+                    otherNode = squareGrid[currentNode.x - 1][currentNode.y - 1];
+                    if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + dDistance) {
+                        otherNode.distance = currentNode.distance + dDistance;
+                        otherNode.parent = currentNode;
+                        distanceQueue.add(otherNode);
+                    }
+                }
+
+
+            }
+
+            // check Left node exixt
+            if (currentNode.y - 1 > 0) {
+                otherNode = squareGrid[currentNode.x][currentNode.y - 1];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
+            }
+
+            // check Right node exist
+            if (currentNode.y + 1 < size) {
+                otherNode = squareGrid[currentNode.x][currentNode.y + 1];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
+            }
+            // check down node exixt
+            if (currentNode.x + 1 < size) {
+
+                otherNode = squareGrid[currentNode.x + 1][currentNode.y];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
+
+                // check Down Left node exist
+                if (currentNode.y - 1 >= 0) {
+                    otherNode = squareGrid[currentNode.x + 1][currentNode.y - 1];
+                    if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + dDistance) {
+                        otherNode.distance = currentNode.distance + dDistance;
+                        otherNode.parent = currentNode;
+                        distanceQueue.add(otherNode);
+                    }
+                }
+
+                // check Down Right node exist node
+                if (currentNode.y + 1 < size) {
+                    otherNode = squareGrid[currentNode.x + 1][currentNode.y + 1];
+                    if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + dDistance) {
+                        otherNode.distance = currentNode.distance + dDistance;
+                        otherNode.parent = currentNode;
+                        distanceQueue.add(otherNode);
+                    }
+                }
+            }
+             //marked as visited
+            currentNode.visitedCell = true;
+        }
+
+        ArrayList<Node> backTrackPath = new ArrayList<>();
+
+
+        // Checking if a path exists
+        if (!(squareGrid[endPoint.x][endPoint.y].distance == Integer.MAX_VALUE  || squareGrid[startPoint.x][startPoint.y].distance == Integer.MAX_VALUE)) {
+            //Trace back the path
+            Node currentNode = squareGrid[endPoint.x][endPoint.y];
+            //add end point cordinates to backTrackPath
+            backTrackPath.add(currentNode);
+            System.out.println(name+":"+currentNode.distance);
+            while (currentNode.parent != null) {
+                backTrackPath.add(currentNode.parent);
+
+                currentNode = currentNode.parent;
+            }
+        } else System.out.println("No possible path");
+
+
+        return backTrackPath;
+    }
             }
         }
 
