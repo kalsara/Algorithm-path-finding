@@ -1,4 +1,21 @@
+ check Right node exist
+            if (currentNode.y + 1 < size) {
+                otherNode = squareGrid[currentNode.x][currentNode.y + 1];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
+            }
+            // check down node exixt
+            if (currentNode.x + 1 < size) {
 
+                otherNode = squareGrid[currentNode.x + 1][currentNode.y];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
 public class pathFindingAlgo{
 
 public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int Bj,double dDistance,String name) {
