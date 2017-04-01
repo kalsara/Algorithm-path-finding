@@ -1,24 +1,18 @@
- check Right node exist
-            if (currentNode.y + 1 < size) {
-                otherNode = squareGrid[currentNode.x][currentNode.y + 1];
-                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
-                    otherNode.distance = currentNode.distance + hVDistance;
-                    otherNode.parent = currentNode;
-                    distanceQueue.add(otherNode);
-                }
-            }
-            // check down node exixt
-            if (currentNode.x + 1 < size) {
+/**
+ * Created by Dell on 3/31/2017.
+ *
+ */
+import java.awt.*;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-                otherNode = squareGrid[currentNode.x + 1][currentNode.y];
-                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
-                    otherNode.distance = currentNode.distance + hVDistance;
-                    otherNode.parent = currentNode;
-                    distanceQueue.add(otherNode);
-                }
+
 public class pathFindingAlgo{
 
-public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int Bj,double dDistance,String name) {
+
+    double hVDistance = 1.0;
+//dijikstar algorithm
+    public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int Bj,double dDistance,String name) {
         Node [][]squareGrid;
         //size of randomlyGenMatrix boolean 2D array
         int size = open.length;
@@ -38,7 +32,10 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
 
 
                 }
-// setting start distance to 0.
+            }
+        }
+
+        // setting start distance to 0.
         // All other Nodes will have infinity distance at the beginning
         startPoint.distance =0;
 
@@ -115,7 +112,24 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
                 }
             }
 
-            //
+            // check Right node exist
+            if (currentNode.y + 1 < size) {
+                otherNode = squareGrid[currentNode.x][currentNode.y + 1];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
+            }
+            // check down node exixt
+            if (currentNode.x + 1 < size) {
+
+                otherNode = squareGrid[currentNode.x + 1][currentNode.y];
+                if (!otherNode.visitedCell && !otherNode.blockedCell && otherNode.distance > currentNode.distance + hVDistance) {
+                    otherNode.distance = currentNode.distance + hVDistance;
+                    otherNode.parent = currentNode;
+                    distanceQueue.add(otherNode);
+                }
 
                 // check Down Left node exist
                 if (currentNode.y - 1 >= 0) {
@@ -161,10 +175,9 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
 
         return backTrackPath;
     }
-            }
-        }
 
-/make grid
+
+//make grid
     public static void show(boolean[][] a, boolean which) {
         int N = a.length;
         StdDraw.setXscale(-1, N);
@@ -176,16 +189,8 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
                     StdDraw.square(j, N - i - 1, .5);
                 else StdDraw.filledSquare(j, N - i - 1, .5);
     }
-// return a random N-by-N boolean matrix, where each entry is
-    // true with probability p
-    public static boolean[][] random(int N, double p) {
-        boolean[][] a = new boolean[N][N];
-        for (int i = 0; i < N; i++)
-            for (int j = 0; j < N; j++)
-                a[i][j] = StdRandom.bernoulli(p);
-        return a;
-    }
-// draw the N-by-N boolean matrix to standard draw, including the points A (x1, y1) and B (x2,y2) to be marked by a circle
+
+    // draw the N-by-N boolean matrix to standard draw, including the points A (x1, y1) and B (x2,y2) to be marked by a circle
     //draw particular path by a line
     public static void show(boolean[][] a, boolean which, int x1, int y1, int x2, int y2,ArrayList<Node> backTrackPath) {
         int N = a.length;
@@ -211,7 +216,13 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
             }*/
             count++;
 
-           
+           try {
+                TimeUnit.MILLISECONDS.sleep(100);
+
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             StdDraw.setPenColor(Color.RED);
             if (i == 0) {
 
@@ -229,6 +240,62 @@ public  ArrayList<Node> PathFind(boolean[][] open, int Ai, int Aj, int Bi, int B
             }
         }
     }
+
+    // return a random N-by-N boolean matrix, where each entry is
+    // true with probability p
+    public static boolean[][] random(int N, double p) {
+        boolean[][] a = new boolean[N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                a[i][j] = StdRandom.bernoulli(p);
+        return a;
+    }
+
+    public static void main(String[] args){
+
+        // The following will generate a 10x10 squared grid with relatively few obstacles in it
+        // The lower the second parameter, the more obstacles (black cells) are generated
+        boolean[][] randomlyGenMatrix = random(10, 0.8);
+
+        StdArrayIO.print(randomlyGenMatrix);
+        show(randomlyGenMatrix, true);
+
+        // Reading the coordinates for points A and B on the input squared grid.
+
+        // THIS IS AN EXAMPLE ONLY ON HOW TO USE THE JAVA INTERNAL WATCH
+        // Start the clock ticking in order to capture the time being spent on inputting the coordinates
+        // You should position this command accordingly in order to perform the algorithmic analysis
+
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter i for A > ");
+        int Ai = in.nextInt();
+
+        System.out.println("Enter j for A > ");
+        int Aj = in.nextInt();
+
+        System.out.println("Enter i for B > ");
+        int Bi = in.nextInt();
+
+        System.out.println("Enter j for B > ");
+        int Bj = in.nextInt();
+        pathFindingAlgo a=new pathFindingAlgo();
+        int x=0;
+        int y=0;
+        Stopwatch timer= new Stopwatch();
+        Node b=new Node(x,y);
+
+        ArrayList<Node> path1 = a.PathFind(randomlyGenMatrix, Ai, Aj, Bi, Bj,b.Manhattan(),"Manhattan");
+        System.out.println(timer.elapsedTime());
+
+        ArrayList<Node> path2 = a.PathFind(randomlyGenMatrix, Ai, Aj, Bi, Bj,b.Euclidean(),"Euclidean");
+        ArrayList<Node> path3= a.PathFind(randomlyGenMatrix, Ai, Aj, Bi, Bj,b.Chebyshev(),"Chebyshev");
+
+       show(randomlyGenMatrix, true, Ai, Aj, Bi, Bj, path2);
+
+
+    }
+
 
 
 }
